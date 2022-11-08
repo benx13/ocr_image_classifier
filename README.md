@@ -34,12 +34,16 @@ Note: all models are initialized with **imagenet** weights and optimized whit **
 
  - we can see that although multihead attention mechanism is way more efficient than convolution cnns outperform the vision transformer due to the fact that transformers require large amounts of data.
  - we can see that the efficientNet on square images outperformed the one with images of shape 33x100 due to the fact that the the actual model was pretrained on imagenet dataset in which images have square shape.
+
  -  visualisation of the efficientnet features on a 2d space: 
  ![enter image description here](https://i.ibb.co/zR2BmXL/effcient-Netb0-features.png)
+ 
+ 
  - Learning curve of the efficientnet b0
  ![enter image description here](https://i.ibb.co/PDcBgxt/photo-2022-11-08-18-36-39.jpg)
- - confusion matrix
  
+ 
+ - confusion matrix
  ![enter image description here](https://i.ibb.co/3hCdc5B/photo-2022-11-08-18-36-43.jpg)
 
 
