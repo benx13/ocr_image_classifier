@@ -45,3 +45,6 @@ Note: all models are initialized with **imagenet** weights and optimized whit **
 
 ## Over all
 ![enter image description here](https://i.ibb.co/hcFC9sv/summary.png)
+
+
+## One more thing we can try is binarizing the images
