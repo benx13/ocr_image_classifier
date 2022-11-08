@@ -23,7 +23,7 @@ As typical machine learning task I used only **xgboost** on different variations
 
 ## ML approach
 we trained 2 CNNs and a vision transformer on on different variety of image transformations: 
-Note: all models are initialized with imagenet weights.
+Note: all models are initialized with **imagenet** weights and optimized whit **adabelief** optimizer on cuda gpus.
 
 | transformation-model | acc  |
 |--|--|
