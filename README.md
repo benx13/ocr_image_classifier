@@ -18,10 +18,10 @@ As typical machine learning task I used only **xgboost** on different variations
 
  - we can observe that the behavior of raw images and histogram projections is quite the same due to the fact that the classification is based on the fact that the similarity of spaces between letters is highly correlated in different members of the same class. Hence histograms tend to look similar in the same class: **drop histogram of two different images from the same class here**  
  - we can see that **hog** features outperform the rest with arelatively  low  computational complexity. 
- ![enter image description here](https://i.ibb.co/0hgZTj1/photo-2022-11-08-18-34-18.jpg)
+ ![enter image description here](https://i.ibb.co/9Yv1PqY/Screenshot-from-2022-11-08-18-21-53.png)
 
 
-## ML approach
+## Deeplearning approach
 we trained 2 CNNs and a vision transformer on on different variety of image transformations: 
 Note: all models are initialized with **imagenet** weights and optimized via **adabelief** optimizer.
 
