@@ -3,16 +3,11 @@ import tempfile
 import streamlit as st
 import torch.nn.functional as F
 import torchvision
-from tqdm import tqdm
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
-import scipy.io
-import os
 from torch import nn
 import torch
 import torchvision.transforms as T
-from torch.utils.data import Dataset, DataLoader
 from PIL import Image
 
 
@@ -36,7 +31,7 @@ if 'efficientNetB0' not in st.session_state:
 
 
 st.set_page_config(layout='wide')
-st.title('Words classifier(works on gpu only)')
+st.title('Words classifier Deep Learning(for on gpu only so far)')
 
 file = st.file_uploader('Choose an image')
 if (file is not None):
@@ -46,34 +41,49 @@ if (file is not None):
     st.write('please wait reading image ...')
 
 else:
-    name = '/home/benx13/code/ocr/ocr_image_classifier/data_2021/data_2021/png/ce79_040.png'
+    name = '/home/benx13/code/ocr/ocr_image_classifier/data_2021/data_2021/png/bf38_039.png'
     st.write('please wait reading default image ...')
 st.image(cv2.imread(name, 0), width=500)
 
 
-if st.button('EfficientNet'):
-    with torch.no_grad():
-        model = st.session_state['efficientNetB0'].to(device).eval()
-        transform = T.Compose([T.Resize((224, 224)),T.ToTensor()]) 
-        img = Image.open(name)
-        tensor = transform(img).to(device).unsqueeze(0)
-        prob = F.softmax(model(tensor)).cpu().detach().numpy()
-        dict = {str(i):prob[0,i] for i in range(22)}
-        st.write("softmax probability normalization:")
-        st.write(dict)
-        st.write("predicted class: ", np.argmax(prob), ", probability: ",np.max(prob))
 
-if st.button('Restnet18'):
-    with torch.no_grad():
-        model = st.session_state['resnet18'].to(device).eval()
-        transform = T.Compose([T.Resize((224, 224)),T.ToTensor()]) 
-        img = Image.open(name)
-        tensor = transform(img).to(device).unsqueeze(0)
-        prob = (F.softmax(model(tensor)).cpu().detach().numpy())
-        dict = {str(i):prob[0,i] for i in range(22)}
-        st.write("softmax probability normalization:")
-        st.write(dict)
-        st.write("predicted class: ", np.argmax(prob), ", probability: ",np.max(prob))
+option = st.sidebar.selectbox(
+    'Please select a model?',
+    ('EfficientNet', 'Restnet18'))
+
+if st.sidebar.button("Run"):
+
+    if option == 'EfficientNet':
+        with torch.no_grad():
+            model = st.session_state['efficientNetB0'].to(device).eval()
+            transform = T.Compose([T.Resize((224, 224)),T.ToTensor()]) 
+            img = Image.open(name)
+            tensor = transform(img).to(device).unsqueeze(0)
+            prob = F.softmax(model(tensor)).cpu().detach().numpy()
+            dict = {str(i):prob[0,i] for i in range(22)}
+            col1, col2 = st.columns(2)
+            with col1:
+                st.write("softmax probability normalization:")
+                st.write(dict)
+            with col2:
+                st.write("predicted class: ", np.argmax(prob), ", probability: ",np.max(prob))
+
+
+
+    if option == 'Restnet18':
+        with torch.no_grad():
+            model = st.session_state['resnet18'].to(device).eval()
+            transform = T.Compose([T.Resize((224, 224)),T.ToTensor()]) 
+            img = Image.open(name)
+            tensor = transform(img).to(device).unsqueeze(0)
+            prob = (F.softmax(model(tensor)).cpu().detach().numpy())
+            dict = {str(i):prob[0,i] for i in range(22)}
+            col1, col2 = st.columns(2)
+            with col1:
+                st.write("softmax probability normalization:")
+                st.write(dict)
+            with col2:
+                st.write("predicted class: ", np.argmax(prob), ", probability: ",np.max(prob))
 
 
 
