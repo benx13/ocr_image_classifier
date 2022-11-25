@@ -33,7 +33,6 @@ d[18] = 'تلّ الغزلان'
 d[19] = 'سيدي الظّاهر'
 d[20] = 'الفايض'
 d[21] = 'الرضّاع'
-d
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -84,13 +83,8 @@ if st.sidebar.button("Run"):
             tensor = transform(img).to(device).unsqueeze(0)
             prob = F.softmax(model(tensor)).cpu().detach().numpy()
             dict = {str(i):prob[0,i] for i in range(22)}
-            col1, col2 = st.columns(2)
-            with col1:
-                st.write("Softmax probability normalization:")
-                st.write(dict)
-            with col2:
-                st.write("Predicted class: ", np.argmax(prob), ", Word: ", d[np.argmax(prob)], ", Probability: ", np.max(prob))
-
+            
+            st.write("Predicted class: ", np.argmax(prob), ", word: ", d[np.argmax(prob)], ", probability: ", np.max(prob))
 
     if option == 'Restnet18':
         with torch.no_grad():
@@ -100,13 +94,5 @@ if st.sidebar.button("Run"):
             tensor = transform(img).to(device).unsqueeze(0)
             prob = (F.softmax(model(tensor)).cpu().detach().numpy())
             dict = {str(i):prob[0,i] for i in range(22)}
-            col1, col2 = st.columns(2)
-            with col1:
-                st.write("softmax probability normalization:")
-                st.write(dict)
-            with col2:
-                st.write("predicted class: ", np.argmax(prob), ", Word: ", d[np.argmax(prob)], ", probability: ",np.max(prob))
-
-
-
+            st.write("Predicted class: ", np.argmax(prob), ", word: ", d[np.argmax(prob)], ", probability: ", np.max(prob))
 

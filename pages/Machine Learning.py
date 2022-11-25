@@ -7,6 +7,31 @@ import pickle
 from skimage.feature import hog
 import matplotlib.pyplot as plt
 
+d = {i:'' for i in range(22)}
+d[0] = 'المنزه 9'
+d[1] = 'المرناقيّة 20 مارس'
+d[2] = 'سيدي إبراهيم الزهّار'
+d[3] = 'المنزه 6'
+d[4] = 'غنّوش'
+d[5] = 'شتاوة صحراوي'
+d[6] = 'رأس الذّراع'
+d[7] = 'سبعة آبار'
+d[8] = 'شعّال'
+d[9] = 'الخليج'
+d[10] = 'تطاوين 7 نوفمبر'
+d[11] = 'أآودة'
+d[12] = 'شمّاخ'
+d[13] = 'نقّة'
+d[14] = 'المحارزة 18'
+d[15] = 'نّحال'
+d[16] = 'مارث'
+d[17] = 'الدخّانية'
+d[18] = 'تلّ الغزلان'
+d[19] = 'سيدي الظّاهر'
+d[20] = 'الفايض'
+d[21] = 'الرضّاع'
+
+
 
 def contours_extract(img):
     h,w=img.shape
@@ -54,7 +79,6 @@ else:
     #st.write('please wait reading default image ...')
 st.image(cv2.imread(name, 0), width=500)
 
-
 modelname = st.sidebar.selectbox(
     'Please select a model?',
     ('XGBoost', "SVM"))
@@ -77,36 +101,37 @@ if st.sidebar.button("Run"):
         st.image(vis/255, width=500)
         prob = model.predict_proba(ss.transform(features.reshape(1, features.shape[0])))
         #st.write('probability')
-        st.write("predicted class: ", np.argmax(prob), ", probability: ",np.max(prob))
+        st.write("Predicted class: ", np.argmax(prob), ", word: ", d[np.max(prob)], ", probability: ", np.max(prob))
     if(modelname == 'XGBoost' and preprocess == 'Raw images'):
         model = st.session_state['xgboost_raw']
         ss = st.session_state['ss_raw']
         img = cv2.resize(cv2.imread(name, 0), (100, 33)).flatten()
         prob = model.predict_proba(ss.transform(img.reshape(1, img.shape[0])))
         #st.write('probability')
-        st.write("predicted class: ", np.argmax(prob), ", probability: ",np.max(prob))
+        st.write("Predicted class: ", np.argmax(prob), ", word: ", d[np.max(prob)], ", probability: ", np.max(prob))
     if(modelname == 'XGBoost' and preprocess == 'Projections'):
         model = st.session_state['xgboost_pr']
         ss = st.session_state['ss_pr']
         img = np.sum(cv2.resize(cv2.imread(name, 0), (100, 33)), axis=0)
-        fig, x = plt.subplots()
+        fig, x = plt.subplots() 
+        fig.set_size_inches(6, 3)
         x.plot(img)
         st.pyplot(fig)
         prob = model.predict_proba(ss.transform(img.reshape(1, img.shape[0])))
         #st.write('probability')
-        st.write("predicted class: ", np.argmax(prob), ", probability: ",np.max(prob))
+        st.write("Predicted class: ", np.argmax(prob), ", word: ", d[np.max(prob)], ", probability: ", np.max(prob))
     if(modelname == 'SVM' and preprocess == 'countours'):
         model = st.session_state['svm_countours']
         ss = st.session_state['ss_countours']
         img = contours_extract(cv2.resize(cv2.imread(name, 0), (100, 33)))
         st.image(img.reshape((33,100))/255, width=500)
         prob = model.predict(ss.transform(img.reshape(1, img.shape[0])))
-        st.write('predicted class: ', str(prob[0]))
-        #st.write("predicted class: ", np.argmax(prob), ", probability: ",np.max(prob))
+        #st.write('predicted class: ', str(prob[0]))
+        st.write("Predicted class: ", np.argmax(prob), ", word: ", d[np.max(prob)], ", probability: ", np.max(prob))
     if(modelname == 'SVM' and preprocess == 'Raw images'):
         model = st.session_state['svm_raw']
         ss = st.session_state['ss_raw']
         img = cv2.resize(cv2.imread(name, 0), (100, 33)).flatten()
         prob = model.predict(ss.transform(img.reshape(1, img.shape[0])))
-        st.write('predicted class: ', str(prob[0]))
-        #st.write("predicted class: ", np.argmax(prob), ", probability: ",np.max(prob))
+        #st.write('predicted class: ', str(prob[0]))
+        st.write("Predicted class: ", np.argmax(prob), ", word: ", d[np.max(prob)], ", probability: ", np.max(prob))
